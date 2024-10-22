@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koniec umowy</title>
+
+    <!-- Linki do Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Agdasima:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Style CSS -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Agdasima', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            color: white;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('stormmediaxD.png') no-repeat center center fixed;
+            background-size: cover;
+            filter: blur(1px);
+            z-index: -2;
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        #countdown {
+            font-size: 48px;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 
+                         -2px -2px 4px rgba(0, 0, 0, 0.8);
+            animation: scaleIn 1.5s ease-in-out 1s forwards, pulse 2s infinite; /* Dodano animację pulse */
+            transform: scale(0.5);
+        }
+
+        h1 {
+            font-size: 36px;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 
+                         -2px -2px 4px rgba(0, 0, 0, 0.8);
+            animation: slideIn 2s ease-in-out;
+        }
+
+        .end-date {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #ffffff;
+            opacity: 0;
+            animation: fadeInDate 1.5s ease-in-out 2.5s forwards;
+        }
+
+        /* Styl dla obrazka, który zastępuje przycisk "Play" */
+        .play-image {
+            position: absolute;
+            bottom: 20px;
+            cursor: pointer;
+            width: 100px;
+            height: auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDate {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Pulsujący efekt dla odliczania */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Wypierdalamy ze stormmedii za...</h1>
+        <div id="countdown"></div>
+        <div class="end-date">wolnosc i swoboda: 02.03.2025</div>
+    </div>
+
+    <!-- Element audio, który będzie odtwarzał dźwięk -->
+    <audio id="audioPlayer" src="play.mp3"></audio>
+
+    <!-- Obrazek zamiast przycisku "Play" -->
+    <img src="play.png" class="play-image" onclick="playSound()" alt="Play">
+
+    <script>
+        // Ustawienie daty docelowej
+        var countDownDate = new Date("Mar 01, 2025 23:59:59").getTime();
+
+        // Aktualizacja odliczania co 1 sekundę
+        var x = setInterval(function() {
+
+            var now = new Date().getTime();
+
+            var distance = countDownDate - now;
+
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+            + minutes + "m " + seconds + "s ";
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "witamy na wolności";
+            }
+        }, 1000);
+
+        // Funkcja odtwarzająca dźwięk po kliknięciu na obrazek
+        function playSound() {
+            var audio = document.getElementById("audioPlayer");
+            audio.play();
+        }
+    </script>
+</body>
+</html>
